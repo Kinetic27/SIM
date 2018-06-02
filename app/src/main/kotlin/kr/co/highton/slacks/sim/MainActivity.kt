@@ -8,14 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
     override var viewId: Int = R.layout.activity_main
     override var toolbarId: Int? = R.id.toolbar
     private lateinit var toast: Toast
-    private var backKeyPressedTime: Long = 0
+    private var backKeyPressedTime: Long = 200
     private var mViewPager: ViewPager? = null
 
     @SuppressLint("ShowToast")
@@ -32,17 +31,14 @@ class MainActivity : BaseActivity() {
         tabLayout.setupWithViewPager(mViewPager)
 
         // set icons
-        tabLayout.getTabAt(0)!!.text = "기구 대여"
-        tabLayout.getTabAt(1)!!.text = "종목 소개"
+        tabLayout.getTabAt(0)!!.text = "종목 소개"
+        tabLayout.getTabAt(1)!!.text = "주변 시설"
         tabLayout.getTabAt(2)!!.text = "Q&A"
-        tabLayout.getTabAt(3)!!.text = "Tips"
+        tabLayout.getTabAt(3)!!.text = "Tip!"
 
         mViewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object :
-                TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                tab.select()
-            }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) = tab.select()
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
 
@@ -51,7 +47,6 @@ class MainActivity : BaseActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {
 
             }
-
         })
 
        /* viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -82,7 +77,6 @@ class MainActivity : BaseActivity() {
             toast.cancel()
             this.finish()
         }
-
     }
 
     inner class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager) {
@@ -91,7 +85,7 @@ class MainActivity : BaseActivity() {
 
             return when (position) {
                 0 ->
-                    B2cFragment()
+                    FngFragment()
                 1 ->
                     AdFragment()
                 2 ->

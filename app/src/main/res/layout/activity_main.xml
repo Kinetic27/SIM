@@ -5,8 +5,8 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kr.co.highton.slacks.sim.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="kr.co.highton.slacks.sim.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -29,14 +29,14 @@
                 android:text="@string/app_name"
                 android:textColor="@android:color/white" />
 
-            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
-            app:tabBackground="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorAccent" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -44,7 +44,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fitsSystemWindows="true" />
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>
