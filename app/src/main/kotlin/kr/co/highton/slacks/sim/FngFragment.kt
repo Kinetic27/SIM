@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +23,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
 
 /**
 * Created by Kinetic on 2018-06-02.
 */
+
 class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
@@ -33,7 +38,6 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        // 3
         private const val REQUEST_CHECK_SETTINGS = 2
     }
 
@@ -44,6 +48,7 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_fng, container, false)
+
         val mapFragment: SupportMapFragment? = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
@@ -69,8 +74,34 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         val seoul = LatLng(37.56, 126.97)
         mMap.addMarker(MarkerOptions().position(seoul).title("Marker in Seoul").snippet("한국의 수도"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul))
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul))
         setUpMap()
+    }
+
+    override fun onMarkerClick(p0: Marker?) = false
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK) {
+                locationUpdateState = true
+                startLocationUpdates()
+            }
+        }
+
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!locationUpdateState) {
+            startLocationUpdates()
+        }
     }
 
     private fun setUpMap() {
@@ -84,7 +115,6 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         mMap.isMyLocationEnabled = true
 
         fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
-            // Got last known location. In some rare situations this can be null.
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
@@ -95,16 +125,15 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
-        // 1
         val markerOptions = MarkerOptions().position(location)
-        // 2
+
+        val titleStr = getAddress(location)
+        markerOptions.title(titleStr)
+
         mMap.addMarker(markerOptions)
     }
 
-    override fun onMarkerClick(p0: Marker?): Boolean {
-        TODO()
-        //미구현
-    }
+
 
     private fun startLocationUpdates() {
 
@@ -128,11 +157,9 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         val builder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
 
-        // 4
         val client = LocationServices.getSettingsClient(activity!!)
         val task = client.checkLocationSettings(builder.build())
 
-        // 5
         task.addOnSuccessListener {
             locationUpdateState = true
             startLocationUpdates()
@@ -140,41 +167,34 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         task.addOnFailureListener { e ->
             // 6
             if (e is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
                 try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
                     e.startResolutionForResult(activity,
                             REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
                 }
             }
         }
     }
 
+    private fun getAddress(latLng: LatLng): String {
+        val geocoder = Geocoder(activity)
+        val addresses: List<Address>?
+        val address: Address?
+        var addressText = ""
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == Activity.RESULT_OK) {
-                locationUpdateState = true
-                startLocationUpdates()
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            if (null != addresses && !addresses.isEmpty()) {
+                address = addresses[0]
+                for (i in 0 until address.maxAddressLineIndex) {
+                    addressText += if (i == 0) address.getAddressLine(i) else "\n" + address.getAddressLine(i)
+                }
             }
+        } catch (e: IOException) {
+            Log.e("MapsActivity", e.localizedMessage)
         }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!locationUpdateState) {
-            startLocationUpdates()
-        }
+        return addressText
     }
 
 }

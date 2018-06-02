@@ -85,9 +85,9 @@ class MainActivity : BaseActivity() {
 
             return when (position) {
                 0 ->
-                    FngFragment()
-                1 ->
                     AdFragment()
+                1 ->
+                    FngFragment()
                 2 ->
                     C2cFragment()
                 3 ->
