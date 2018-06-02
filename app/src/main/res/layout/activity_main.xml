@@ -15,21 +15,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
                     <TextView
+                        android:id="@+id/toolbar_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/toolbar_tv"
-                        android:text="@string/app_name"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:text="@string/app_name"/>
 
             </android.support.v7.widget.Toolbar>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="Hello World!"/>
 
     </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
