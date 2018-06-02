@@ -96,7 +96,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         }
     }
-
+/*
     fun disableToggle() {
         this.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
@@ -121,7 +121,7 @@ abstract class BaseActivity : AppCompatActivity() {
         this.supportActionBar?.setHomeAsUpIndicator(iconRes)
     }
     // 툴바 아이콘
-
+*/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
