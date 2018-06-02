@@ -1,7 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff0000">
+    android:background="#FFF3F3F4"
+    android:orientation="vertical"
+    tools:ignore="ButtonStyle,HardcodedText">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/summer_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_select"
+            android:text="하계 종목"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/winter_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_unselect"
+            android:text="동계 종목"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp">
+
+        <Button
+            android:id="@+id/ground_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_select"
+            android:text="육상종목"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/water_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_unselect"
+            android:text="수상종목"
+            android:textColor="@android:color/black" />
+
+
+        <Button
+            android:id="@+id/ball_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_unselect"
+            android:text="구기종목"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/other_btn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_effect_unselect"
+            android:text="기타종목"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+</LinearLayout>

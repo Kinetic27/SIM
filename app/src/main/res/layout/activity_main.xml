@@ -18,12 +18,19 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="#03a9f4"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-
+            <ImageView
+                android:layout_marginEnd="5dp"
+                android:id="@+id/logo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/login_logo"
+                tools:ignore="ContentDescription" />
             <TextView
                 android:id="@+id/toolbar_tv"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
@@ -35,8 +42,10 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/colorAccent" />
+            app:tabBackground="@android:color/white"
+            app:tabIndicatorColor="#28a3db"
+            app:tabSelectedTextColor="#03a9f4"
+            app:tabTextColor="@color/colorSecondaryText" />
 
     </android.support.design.widget.AppBarLayout>
 

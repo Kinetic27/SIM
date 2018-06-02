@@ -1,5 +1,6 @@
 package kr.co.highton.slacks.sim
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
@@ -10,6 +11,7 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +22,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 
 /**
@@ -52,6 +58,29 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         val mapFragment: SupportMapFragment? = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
+
+        Client.retrofitService.getPlace().enqueue(object : Callback<ArrayList<LocationRepo>> {
+
+            override fun onResponse(call: Call<ArrayList<LocationRepo>>?, response: Response<ArrayList<LocationRepo>>?) {
+                val repo = response!!.body()
+
+                when (response.code()) {
+                    200 -> {
+                        repo!!.indices.forEach {
+                            val marker = LatLng(repo[it].lat.toDouble(), repo[it].lng.toDouble())
+                            mMap.addMarker(MarkerOptions().position(marker).title(repo[it].placeName))
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+                            setUpMap()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<LocationRepo>>?, t: Throwable?) {
+                Log.v("FngTest", "fail!!")
+            }
+        })
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
         locationCallback = object : LocationCallback() {
@@ -64,6 +93,7 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
         createLocationRequest()
 
+
         return view
     }
 
@@ -72,9 +102,6 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setOnMarkerClickListener(this)
 
-        val seoul = LatLng(37.56, 126.97)
-        mMap.addMarker(MarkerOptions().position(seoul).title("Marker in Seoul").snippet("한국의 수도"))
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul))
         setUpMap()
     }
 
@@ -105,21 +132,17 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(activity!!,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity!!,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
 
-        mMap.isMyLocationEnabled = true
+        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
-            if (location != null) {
-                lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLng)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
+                if (location != null) {
+                    lastLocation = location
+                    val currentLatLng = LatLng(location.latitude, location.longitude)
+                    placeMarkerOnMap(currentLatLng)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                }
             }
         }
     }
@@ -129,7 +152,7 @@ class FngFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         val titleStr = getAddress(location)
         markerOptions.title(titleStr)
-
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         mMap.addMarker(markerOptions)
     }
 
