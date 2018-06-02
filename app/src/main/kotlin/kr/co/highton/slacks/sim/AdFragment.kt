@@ -13,13 +13,6 @@ import android.widget.Button
 */
 
 class AdFragment : Fragment() {
-    private var summer = true
-    private var winter = false
-    private var ground = true
-    private var water = false
-    private var ball = false
-    private var other = false
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_ad, container, false)
         view.findViewById<Button>(R.id.summer_btn).setOnClickListener { changeSelect(it) }
@@ -33,50 +26,45 @@ class AdFragment : Fragment() {
     }
 
     private fun changeSelect(v: View) {
-        var dotColor = true
+
         when ((v as Button).text.toString()) {
             "하계 종목" -> {
-                if (winter) {
-                    summer = !summer
-                    dotColor = summer
+                view!!.findViewById<Button>(R.id.summer_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                view!!.findViewById<Button>(R.id.winter_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 }
-            }
+
             "동계 종목" -> {
-                if (summer) {
-                    winter = !winter
-                    dotColor = winter
+                view!!.findViewById<Button>(R.id.winter_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                view!!.findViewById<Button>(R.id.summer_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 }
-            }
+
             "육상종목" -> {
-                if (water || ball || other) {
-                    ground = !ground
-                    dotColor = ground
+                view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.ground_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
                 }
-            }
+
             "수상종목" -> {
-                if (ground || ball || other) {
-                    water = !water
-                    dotColor = water
+                view!!.findViewById<Button>(R.id.ground_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
                 }
-            }
+
             "구기종목" -> {
-                if (ground || water || other) {
-                    ball = !ball
-                    dotColor = ball
+                view!!.findViewById<Button>(R.id.ground_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
                 }
-            }
+
             "기타종목" -> {
-                if (ground || water || ball) {
-                    other = !other
-                    dotColor = other
-                }
+                view!!.findViewById<Button>(R.id.ground_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
             }
         }
-
-        v.background = if (dotColor) {
-            ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
-        } else ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
     }
-
-
 }
