@@ -91,4 +91,10 @@
             android:text="기타종목"
             android:textColor="@android:color/black" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ground" />
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 
 /**
 * Created by Kinetic on 2018-06-02.
@@ -25,17 +26,22 @@ class AdFragment : Fragment() {
         return view
     }
 
+    var season = "summer"
+
+
     private fun changeSelect(v: View) {
 
         when ((v as Button).text.toString()) {
             "하계 종목" -> {
                 view!!.findViewById<Button>(R.id.summer_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
                 view!!.findViewById<Button>(R.id.winter_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                season = "summer"
                 }
 
             "동계 종목" -> {
                 view!!.findViewById<Button>(R.id.winter_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
                 view!!.findViewById<Button>(R.id.summer_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
+                season = "winter"
                 }
 
             "육상종목" -> {
@@ -43,6 +49,11 @@ class AdFragment : Fragment() {
                 view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.ground_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                if (season == "summer") {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.ground)
+                } else {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.ground_p)
+                }
                 }
 
             "수상종목" -> {
@@ -50,6 +61,11 @@ class AdFragment : Fragment() {
                 view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                if (season == "summer") {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.water)
+                } else {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.water_p)
+                }
                 }
 
             "구기종목" -> {
@@ -57,6 +73,12 @@ class AdFragment : Fragment() {
                 view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.ball)
+                if (season == "summer") {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.ball)
+                } else {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.nong_p)
+                }
                 }
 
             "기타종목" -> {
@@ -64,6 +86,11 @@ class AdFragment : Fragment() {
                 view!!.findViewById<Button>(R.id.water_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.ball_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_unselect, null)
                 view!!.findViewById<Button>(R.id.other_btn).background = ResourcesCompat.getDrawable(resources, R.drawable.round_effect_select, null)
+                if (season == "summer") {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.other)
+                } else {
+                    view!!.findViewById<ImageView>(R.id.imgs).setImageResource(R.drawable.other_p)
+                }
             }
         }
     }
